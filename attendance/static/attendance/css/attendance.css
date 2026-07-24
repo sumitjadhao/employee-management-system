@@ -1,0 +1,182 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #fff7ed, #fef3e2);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+}
+
+.attendance-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.attendance-box {
+    background-color: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+}
+
+.attendance-box h2 {
+    color: #1a1a2e;
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.date-text {
+    color: #888;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.success-msg {
+    background-color: #dcfce7;
+    color: #16a34a;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.status-row {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f9fafb;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+.status-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.status-item .label {
+    font-size: 12px;
+    color: #999;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.status-item .value {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a2e;
+}
+
+.camera-box {
+    background-color: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    aspect-ratio: 4/3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#video, #preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.camera-buttons {
+    margin-bottom: 20px;
+}
+
+.btn-camera, .btn-retake {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-camera {
+    background-color: #f97316;
+    color: white;
+}
+
+.btn-camera:hover {
+    background-color: #ea580c;
+    transform: translateY(-2px);
+}
+
+.btn-retake {
+    background-color: #f3f4f6;
+    color: #555;
+}
+
+.btn-retake:hover {
+    background-color: #e5e7eb;
+}
+
+.action-buttons {
+    margin-top: 10px;
+}
+
+.btn-checkin, .btn-checkout {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-checkin {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+}
+
+.btn-checkin:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+}
+
+.btn-checkout {
+    background: linear-gradient(135deg, #f97316, #ea580c);
+}
+
+.btn-checkout:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
+}
+
+.done-text {
+    color: #16a34a;
+    font-weight: 600;
+    font-size: 15px;
+}
+.btn-back {
+    display: inline-block;
+    margin-top: 20px;
+    color: #888;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.btn-back:hover {
+    color: #f97316;
+}

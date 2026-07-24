@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard - EMS</title>
+    <link rel="stylesheet" href="{% static 'accounts/css/dashboard.css' %}">
+</head>
+<body>
+
+    <div class="dashboard-container">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">EMS</div>
+            <ul class="sidebar-menu">
+                <li class="active"><a href="{% url 'admin_dashboard' %}">📊 Dashboard</a></li>
+                <li><a href="{% url 'add_employee' %}">➕ Add Employee</a></li>
+                <li><a href="{% url 'employee_list' %}">👥 Employees</a></li>
+                <li><a href="{% url 'view_attendance' %}">📅 Attendance</a></li>
+                <li><a href="{% url 'payroll_list' %}">💰 Payroll</a></li>
+                <li><a href="{% url 'manage_leaves' %}">🕒 Leave Requests</a></li>
+                <li><a href="#">⚙️ Settings</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+
+            <!-- Top Bar -->
+            <div class="topbar">
+                <h2>Admin Dashboard</h2>
+                <div class="topbar-right">
+                    <span>Welcome, {{ request.user.username }}</span>
+                    <a href="{% url 'logout' %}" class="btn-logout">Logout</a>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <p class="stat-label">Total Employees</p>
+                        <div class="stat-icon">👥</div>
+                    </div>
+                    <h3>{{ total_employees }}</h3>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <p class="stat-label">Present Today</p>
+                        <div class="stat-icon">✅</div>
+                    </div>
+                    <h3>{{ present_today }}</h3>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <p class="stat-label">On Leave</p>
+                        <div class="stat-icon">🌴</div>
+                    </div>
+                    <h3>{{ on_leave_today }}</h3>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <p class="stat-label">Departments</p>
+                        <div class="stat-icon">🏢</div>
+                    </div>
+                    <h3>{{ total_departments }}</h3>
+                </div>
+            </div>
+
+            <div class="welcome-box">
+                <h3>Welcome to your Admin Dashboard 👋</h3>
+                <p>Employee, Attendance, and Payroll management features will appear here soon.</p>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

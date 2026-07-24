@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Attendance - EMS</title>
+    <link rel="stylesheet" href="{% static 'accounts/css/dashboard.css' %}">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-logo">EMS</div>
+            <ul class="sidebar-menu">
+                <li><a href="{% url 'admin_dashboard' %}">📊 Dashboard</a></li>
+                <li><a href="{% url 'add_employee' %}">➕ Add Employee</a></li>
+                <li><a href="{% url 'employee_list' %}">👥 Employees</a></li>
+                <li class="active"><a href="{% url 'view_attendance' %}">📅 Attendance</a></li>
+                <li><a href="{% url 'payroll_list' %}">💰 Payroll</a></li>
+                <li><a href="{% url 'manage_leaves' %}">🕒 Leave Requests</a></li>
+                <li><a href="#">⚙️ Settings</a></li>
+            </ul>
+        </aside>
+
+        <div class="main-content">
+            <div class="topbar">
+                <h2>Today's Attendance — {{ today }}</h2>
+                <div class="topbar-right">
+                    <span>Welcome, {{ request.user.username }}</span>
+                    <a href="{% url 'logout' %}" class="btn-logout">Logout</a>
+                </div>
+            </div>
+
+            <div class="table-box">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Employee</th>
+                            <th>Check In</th>
+                            <th>Check Out</th>
+                            <th>Status</th>
+                            <th>Check In Photo</th>
+                            <th>Check Out Photo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for att in attendances %}
+                        <tr>
+                            <td>{{ att.employee.username }}</td>
+                            <td>{{ att.check_in|default:"-" }}</td>
+                            <td>{{ att.check_out|default:"-" }}</td>
+                            <td>
+                                <span class="status-badge status-{{ att.status }}">{{ att.get_status_display }}</span>
+                            </td>
+                            <td>
+                                {% if att.check_in_selfie %}
+                                    <img src="{{ att.check_in_selfie.url }}" class="selfie-thumb">
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if att.check_out_selfie %}
+                                    <img src="{{ att.check_out_selfie.url }}" class="selfie-thumb">
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" style="text-align:center; color:#999;">No attendance marked today.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

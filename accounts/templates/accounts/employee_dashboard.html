@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Dashboard - EMS</title>
+    <link rel="stylesheet" href="{% static 'accounts/css/employee_dashboard.css' %}">
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="emp-navbar">
+        <div class="emp-logo">EMS</div>
+        <div class="emp-nav-right">
+            <div class="emp-avatar">{{ request.user.username|first|upper }}</div>
+            <span class="emp-username">{{ request.user.username }}</span>
+            <a href="{% url 'logout' %}" class="emp-logout-btn">Logout</a>
+        </div>
+    </nav>
+
+    <div class="emp-container">
+
+        <!-- Greeting Banner -->
+        <div class="emp-banner">
+            <div>
+                <h1>Hi, {{ request.user.username }} 👋</h1>
+                <p>Welcome to your personal workspace. Here's what you can do today.</p>
+            </div>
+            <div class="emp-banner-icon">🧑‍💼</div>
+        </div>
+
+        <!-- Quick Action Cards -->
+        <div class="emp-actions-grid">
+            <a href="{% url 'mark_attendance' %}" class="emp-action-card card-blue">
+                <div class="emp-card-icon">📅</div>
+                <h3>Mark Attendance</h3>
+                <p>Check in or check out with a quick selfie</p>
+            </a>
+
+            <a href="{% url 'apply_leave' %}" class="emp-action-card card-purple">
+                <div class="emp-card-icon">🕒</div>
+                <h3>Apply Leave</h3>
+                <p>Request time off and track your leave status</p>
+            </a>
+
+            <a href="{% url 'my_salary' %}" class="emp-action-card card-green">
+                <div class="emp-card-icon">💰</div>
+                <h3>My Salary</h3>
+                <p>View your monthly salary slips</p>
+            </a>
+
+            <a href="#" class="emp-action-card card-orange">
+                <div class="emp-card-icon">👤</div>
+                <h3>My Profile</h3>
+                <p>View and manage your personal details</p>
+            </a>
+        </div>
+
+    </div>
+
+</body>
+</html>

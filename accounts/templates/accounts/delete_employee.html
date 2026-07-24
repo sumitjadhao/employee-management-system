@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Employee - EMS</title>
+    <link rel="stylesheet" href="{% static 'accounts/css/dashboard.css' %}">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-logo">EMS</div>
+            <ul class="sidebar-menu">
+                <li><a href="{% url 'admin_dashboard' %}">📊 Dashboard</a></li>
+                <li><a href="{% url 'add_employee' %}">➕ Add Employee</a></li>
+                <li class="active"><a href="{% url 'employee_list' %}">👥 Employees</a></li>
+                <li><a href="{% url 'view_attendance' %}">📅 Attendance</a></li>
+                <li><a href="{% url 'payroll_list' %}">💰 Payroll</a></li>
+                <li><a href="{% url 'manage_leaves' %}">🕒 Leave Requests</a></li>
+                <li><a href="#">⚙️ Settings</a></li>
+            </ul>
+        </aside>
+
+        <div class="main-content">
+            <div class="topbar">
+                <h2>Delete Employee</h2>
+                <div class="topbar-right">
+                    <span>Welcome, {{ request.user.username }}</span>
+                    <a href="{% url 'logout' %}" class="btn-logout">Logout</a>
+                </div>
+            </div>
+
+            <div class="delete-box">
+                <div class="delete-icon">🗑️</div>
+                <h3>Are you sure?</h3>
+                <p>
+                    Do you really want to delete employee <strong>{{ employee.username }}</strong>?<br>
+                    This action cannot be undone.
+                </p>
+                <form method="POST" class="delete-actions">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-confirm-delete">Yes, Delete</button>
+                    <a href="{% url 'employee_list' %}" class="btn-cancel">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Leaves - EMS</title>
+    <link rel="stylesheet" href="{% static 'accounts/css/dashboard.css' %}">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-logo">EMS</div>
+            <ul class="sidebar-menu">
+                <li><a href="{% url 'admin_dashboard' %}">📊 Dashboard</a></li>
+                <li><a href="{% url 'add_employee' %}">➕ Add Employee</a></li>
+                <li><a href="{% url 'employee_list' %}">👥 Employees</a></li>
+                <li><a href="{% url 'view_attendance' %}">📅 Attendance</a></li>
+                <li><a href="{% url 'payroll_list' %}">💰 Payroll</a></li>
+                <li class="active"><a href="{% url 'manage_leaves' %}">🕒 Leave Requests</a></li>
+                <li><a href="#">⚙️ Settings</a></li>
+            </ul>
+        </aside>
+
+        <div class="main-content">
+            <div class="topbar">
+                <h2>Leave Requests</h2>
+                <div class="topbar-right">
+                    <span>Welcome, {{ request.user.username }}</span>
+                    <a href="{% url 'logout' %}" class="btn-logout">Logout</a>
+                </div>
+            </div>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="form-success">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+
+            <div class="table-box">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Employee</th>
+                            <th>Type</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Reason</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for leave in leaves %}
+                        <tr>
+                            <td>{{ leave.employee.username }}</td>
+                            <td>{{ leave.get_leave_type_display }}</td>
+                            <td>{{ leave.from_date }}</td>
+                            <td>{{ leave.to_date }}</td>
+                            <td>{{ leave.reason }}</td>
+                            <td>
+                                <span class="status-badge status-{{ leave.status }}">{{ leave.get_status_display }}</span>
+                            </td>
+                            <td>
+                                {% if leave.status == 'pending' %}
+                                    <a href="{% url 'update_leave_status' leave.id 'approved' %}" class="btn-edit">Approve</a>
+                                    <a href="{% url 'update_leave_status' leave.id 'rejected' %}" class="btn-delete">Reject</a>
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" style="text-align:center; color:#999;">No leave requests yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,130 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mark Attendance - EMS</title>
+    <link rel="stylesheet" href="{% static 'attendance/css/attendance.css' %}">
+</head>
+<body>
+
+    <div class="attendance-wrapper">
+        <div class="attendance-box">
+            <h2>Mark Your Attendance</h2>
+            <p class="date-text">{{ attendance.date }}</p>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="success-msg">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+
+            <div class="status-row">
+                <div class="status-item">
+                    <span class="label">Check In</span>
+                    <span class="value">{{ attendance.check_in|default:"Not marked" }}</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">Check Out</span>
+                    <span class="value">{{ attendance.check_out|default:"Not marked" }}</span>
+                </div>
+            </div>
+
+            <!-- Camera Section -->
+            <div class="camera-box">
+                <video id="video" autoplay playsinline></video>
+                <canvas id="canvas" style="display:none;"></canvas>
+                <img id="preview" style="display:none;">
+            </div>
+
+            <div class="camera-buttons">
+                <button type="button" id="captureBtn" class="btn-camera">📸 Capture Photo</button>
+                <button type="button" id="retakeBtn" class="btn-retake" style="display:none;">🔄 Retake</button>
+            </div>
+
+            <!-- Form -->
+            <form method="POST" enctype="multipart/form-data" id="attendanceForm">
+                {% csrf_token %}
+                <input type="hidden" name="action" id="actionInput" value="">
+                <input type="file" name="selfie" id="selfieInput" accept="image/*" style="display:none;">
+
+                <div class="action-buttons">
+                    {% if not attendance.check_in %}
+                        <button type="button" class="btn-checkin" onclick="submitAttendance('check_in')">Check In</button>
+                    {% elif not attendance.check_out %}
+                        <button type="button" class="btn-checkout" onclick="submitAttendance('check_out')">Check Out</button>
+                    {% else %}
+                        <p class="done-text">✅ Attendance completed for today!</p>
+                    {% endif %}
+                </div>
+            </form>
+            <a href="{% url 'employee_dashboard' %}" class="btn-back">← Back to Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const preview = document.getElementById('preview');
+        const captureBtn = document.getElementById('captureBtn');
+        const retakeBtn = document.getElementById('retakeBtn');
+        const selfieInput = document.getElementById('selfieInput');
+        const actionInput = document.getElementById('actionInput');
+        const attendanceForm = document.getElementById('attendanceForm');
+
+        let capturedBlob = null;
+
+        // Start camera
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+            })
+            .catch(err => {
+                alert('Camera access denied or not available: ' + err);
+            });
+
+        // Capture photo
+        captureBtn.addEventListener('click', () => {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+
+            canvas.toBlob(blob => {
+                capturedBlob = blob;
+                preview.src = URL.createObjectURL(blob);
+            }, 'image/jpeg');
+
+            video.style.display = 'none';
+            preview.style.display = 'block';
+            captureBtn.style.display = 'none';
+            retakeBtn.style.display = 'inline-block';
+        });
+
+        // Retake photo
+        retakeBtn.addEventListener('click', () => {
+            video.style.display = 'block';
+            preview.style.display = 'none';
+            captureBtn.style.display = 'inline-block';
+            retakeBtn.style.display = 'none';
+            capturedBlob = null;
+        });
+
+        // Submit attendance with captured photo
+        function submitAttendance(action) {
+            if (!capturedBlob) {
+                alert('Please capture a photo first!');
+                return;
+            }
+
+            const dataTransfer = new DataTransfer();
+            const file = new File([capturedBlob], 'selfie.jpg', { type: 'image/jpeg' });
+            dataTransfer.items.add(file);
+            selfieInput.files = dataTransfer.files;
+
+            actionInput.value = action;
+            attendanceForm.submit();
+        }
+    </script>
+
+</body>
+</html>

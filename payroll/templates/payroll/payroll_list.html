@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payroll List - EMS</title>
+    <link rel="stylesheet" href="{% static 'accounts/css/dashboard.css' %}">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-logo">EMS</div>
+            <ul class="sidebar-menu">
+                <li><a href="{% url 'admin_dashboard' %}">📊 Dashboard</a></li>
+                <li><a href="{% url 'add_employee' %}">➕ Add Employee</a></li>
+                <li><a href="{% url 'employee_list' %}">👥 Employees</a></li>
+                <li><a href="{% url 'view_attendance' %}">📅 Attendance</a></li>
+                <li class="active"><a href="{% url 'payroll_list' %}">💰 Payroll</a></li>
+                <li><a href="{% url 'manage_leaves' %}">🕒 Leave Requests</a></li>
+                <li><a href="#">⚙️ Settings</a></li>
+            </ul>
+        </aside>
+
+        <div class="main-content">
+            <div class="topbar">
+                <h2>Payroll Records</h2>
+                <div class="topbar-right">
+                    <span>Welcome, {{ request.user.username }}</span>
+                    <a href="{% url 'logout' %}" class="btn-logout">Logout</a>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <a href="{% url 'generate_payroll' %}" class="btn-submit" style="text-decoration:none; display:inline-block; width:auto; padding: 12px 24px;">➕ Generate New Payroll</a>
+            </div>
+
+            <div class="table-box">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Employee</th>
+                            <th>Month</th>
+                            <th>Year</th>
+                            <th>Basic Pay</th>
+                            <th>Allowances</th>
+                            <th>Deductions</th>
+                            <th>Net Pay</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pay in payrolls %}
+                        <tr>
+                            <td>{{ pay.employee.username }}</td>
+                            <td>{{ pay.get_month_display }}</td>
+                            <td>{{ pay.year }}</td>
+                            <td>₹{{ pay.basic_pay }}</td>
+                            <td>₹{{ pay.allowances }}</td>
+                            <td>₹{{ pay.deductions }}</td>
+                            <td><strong>₹{{ pay.net_pay }}</strong></td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" style="text-align:center; color:#999;">No payroll records yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Employee - EMS</title>
+    <link rel="stylesheet" href="{% static 'accounts/css/dashboard.css' %}">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-logo">EMS</div>
+            <ul class="sidebar-menu">
+                <li><a href="{% url 'admin_dashboard' %}">📊 Dashboard</a></li>
+                <li class="active"><a href="{% url 'add_employee' %}">➕ Add Employee</a></li>
+                <li><a href="{% url 'view_attendance' %}">📅 Attendance</a></li>
+                <li><a href="{% url 'payroll_list' %}">💰 Payroll</a></li>
+                <li><a href="{% url 'manage_leaves' %}">🕒 Leave Requests</a></li>
+                <li><a href="#">⚙️ Settings</a></li>
+            </ul>
+        </aside>
+
+        <div class="main-content">
+            <div class="topbar">
+                <h2>Add New Employee</h2>
+                <div class="topbar-right">
+                    <span>Welcome, {{ request.user.username }}</span>
+                    <a href="{% url 'logout' %}" class="btn-logout">Logout</a>
+                </div>
+            </div>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="form-success">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+
+            <div class="form-box">
+                <form method="POST">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-group">
+                            <label>{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <p class="field-error">{{ field.errors|striptags }}</p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn-submit">Create Employee</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

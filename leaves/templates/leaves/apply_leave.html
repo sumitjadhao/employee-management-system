@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Apply Leave - EMS</title>
+    <link rel="stylesheet" href="{% static 'accounts/css/dashboard.css' %}">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <div class="main-content">
+            <div class="topbar">
+                <h2>Apply for Leave</h2>
+                <div class="topbar-right">
+                    <span>Welcome, {{ request.user.username }}</span>
+                    <a href="{% url 'logout' %}" class="btn-logout">Logout</a>
+                    <a href="{% url 'employee_dashboard' %}" class="btn-logout" style="background-color:#dbeafe; color:#2563eb;">Dashboard</a>
+                </div>
+            </div>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="form-success">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+
+            <div class="form-box" style="margin-bottom: 30px;">
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>Leave Type</label>
+                        <select name="leave_type" required>
+                            <option value="sick">Sick Leave</option>
+                            <option value="casual">Casual Leave</option>
+                            <option value="paid">Paid Leave</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>From Date</label>
+                        <input type="date" name="from_date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>To Date</label>
+                        <input type="date" name="to_date" required>
+                    </div>
+
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>Reason</label>
+                        <input type="text" name="reason" placeholder="Reason for leave" required>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Submit Leave Request</button>
+                </form>
+            </div>
+
+            <div class="table-box">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Reason</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for leave in my_leaves %}
+                        <tr>
+                            <td>{{ leave.get_leave_type_display }}</td>
+                            <td>{{ leave.from_date }}</td>
+                            <td>{{ leave.to_date }}</td>
+                            <td>{{ leave.reason }}</td>
+                            <td>
+                                <span class="status-badge status-{{ leave.status }}">{{ leave.get_status_display }}</span>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" style="text-align:center; color:#999;">No leave requests yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
