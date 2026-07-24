@@ -29,6 +29,9 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://employee-management-system-production-609f.up.railway.app',
+]
 
 # Application definition
 
