@@ -1,2 +1,5 @@
 [phases.setup]
 aptPkgs = ["pkg-config", "default-libmysqlclient-dev", "build-essential"]
+
+[phases.build]
+cmds = ["python manage.py collectstatic --noinput"]
